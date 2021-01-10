@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-"""
-A basic adaptive bot. This is part of the third worksheet.
-
-"""
-
 from api import State, util
 import random, os
 from itertools import chain
@@ -56,7 +50,7 @@ class Bot:
             # IMPLEMENT: Add a function call so that 'value' will
             # contain the predicted value of 'next_state'
             # NOTE: This is different from the line in the minimax/alphabeta bot
-            value = ???
+            value = self.heuristic(next_state)
 
             if maximizing(state):
                 if value > best_value:
@@ -99,7 +93,6 @@ def features(state):
     # type: (State) -> tuple[float, ...]
     """
     Extract features from this state. Remember that every feature vector returned should have the same length.
-
     :param state: A state to be converted to a feature vector
     :return: A tuple of floats: a feature vector representing this state.
     """
@@ -107,34 +100,34 @@ def features(state):
     feature_set = []
 
     # Add player 1's points to feature set
-    p1_points = ???
+    p1_points = state.get_points(1)
 
     # Add player 2's points to feature set
-    p2_points = ???
+    p2_points = state.get_points(2)
 
     # Add player 1's pending points to feature set
-    p1_pending_points = ???
+    p1_pending_points = state.get_pending_points(1)
 
     # Add plauer 2's pending points to feature set
-    p2_pending_points = ???
+    p2_pending_points = state.get_pending_points(2)
 
     # Get trump suit
-    trump_suit = ???
+    trump_suit =state.get_trump_suit()
 
     # Add phase to feature set
-    phase = ???
+    phase = state.get_phase()
 
     # Add stock size to feature set
-    stock_size = ???
+    stock_size = state.get_stock_size()
 
     # Add leader to feature set
-    leader = ???
+    leader = state.leader()
 
     # Add whose turn it is to feature set
-    whose_turn = ???
+    whose_turn = state.whose_turn()
 
     # Add opponent's played card to feature set
-    opponents_played_card = ???
+    opponents_played_card = state.get_opponents_played_card()
 
 
     ################## You do not need to do anything below this line ########################
@@ -186,6 +179,11 @@ def features(state):
     opponents_played_card_onehot = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     opponents_played_card_onehot[opponents_played_card if opponents_played_card is not None else 20] = 1
     feature_set += opponents_played_card_onehot
+
+    # Prevents adding None values to the feature set
+    for index, element in enumerate(feature_set):
+        if element == None:
+            feature_set[index] = 0
 
     # Return feature set
     return feature_set
