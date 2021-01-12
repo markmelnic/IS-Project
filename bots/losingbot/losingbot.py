@@ -19,14 +19,10 @@ class Bot:
 			moves_not_trump = [(move, move[0] % 5) for move in moves]
 		moves_not_trump = self.sort_list(moves_not_trump)
 
-		# print(len(moves), moves)
-		# print(len(moves_not_trump), moves_not_trump)
-		# print(len(moves_trump_suit), moves_trump_suit)
-
 		# play lower than opponent, otherwise fall back to lowest
 		opponent_card = state.get_opponents_played_card()
 		if opponent_card is not None:
-			moves_same_suit = [move for move in moves if Deck.get_suit(move[0]) == Deck.get_suit(state.get_opponents_played_card())]
+			moves_same_suit = [move for move in moves if Deck.get_suit(move[0]) == Deck.get_suit(opponent_card)]
 			move_set = [(move, move[0] % 5) for move in moves_same_suit]
 			move_set = [move for move in move_set if move[1] > opponent_card % 5]
 			move_set = self.sort_list(move_set)
@@ -34,7 +30,7 @@ class Bot:
 				return move_set[-1][0]
 
 		if len(moves_not_trump) > 0:
-				return moves_not_trump[0][0]
+			return moves_not_trump[0][0]
 		else:
 			move_set = [(move, move[0] % 5) for move in moves]
 			move_set = self.sort_list(move_set)
