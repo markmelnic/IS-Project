@@ -186,12 +186,13 @@ class State:
 
 		other_player_points = self.get_points(util.other(winner))
 
+		# modified to see how many games a bot wins instead of how many points it accumulates
 		if other_player_points == 0:
-			points = 3
-		elif other_player_points < 33:
-			points = 2
-		else:
 			points = 1
+		elif other_player_points < 33:
+			points = 1
+		else:
+			points = 0
 
 		return winner, points
 
