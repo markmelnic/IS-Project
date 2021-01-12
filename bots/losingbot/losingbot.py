@@ -27,7 +27,7 @@ class Bot:
 			move_set = [move for move in move_set if move[1] > opponent_card % 5]
 			move_set = self.sort_list(move_set)
 			if len(move_set) > 0:
-				return move_set[-1][0]
+				return move_set[0][0]
 
 		if len(moves_not_trump) > 0:
 			return moves_not_trump[0][0]
