@@ -187,10 +187,15 @@ class State:
 		other_player_points = self.get_points(util.other(winner))
 
 		# modified to see how many games a bot wins instead of how many points it accumulates
+		'''
+		with this scoring system we can track how many games a bot has won
+		bot_score / 100000 will give the 2 point games won
+		bot_score % 100000 will give the 3 point games won
+		'''
 		if other_player_points == 0:
 			points = 1
 		elif other_player_points < 33:
-			points = 1
+			points = 100000
 		else:
 			points = 0
 
