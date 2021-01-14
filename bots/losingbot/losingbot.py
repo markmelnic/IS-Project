@@ -37,4 +37,4 @@ class Bot:
 			return move_set[-1][0]
 
 	def sort_list(self, sub_list): 
-		return(sorted(sub_list, key = lambda x: x[1])) 
+		return sorted(sub_list, key = lambda x: x[1])

@@ -41,7 +41,7 @@ def run_tournament(options):
     print('Results:')
     for i in range(len(bots)):
         games_won = int(wins[i] / 100000) + int(wins[i] % 100000)
-        print('    bot {}: {} points, {} games'.format(bots[i], wins[i], games_won))
+        print('    bot {}: {} points, won {} games'.format(bots[i], wins[i], games_won))
 
 
 if __name__ == "__main__":
