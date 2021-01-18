@@ -70,12 +70,14 @@ def create_dataset(path, player=losingbot.Bot(), games=2000, phase=1):
             data.append(state_vector)
 
             if winner == 1:
-                result = 'won'
+                act_result = 'won'
+                des_result = 'lost'
 
             elif winner == 2:
-                result = 'lost'
+                act_result = 'lost'
+                des_result = 'won'
 
-            target.append(result)
+            target.append(des_result)
 
     with open(path, 'wb') as output:
         pickle.dump((data, target), output, pickle.HIGHEST_PROTOCOL)
