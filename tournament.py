@@ -18,14 +18,17 @@ def run_tournament(options):
 
     print('Playing {} games:'.format(int(totalgames)))
 
-    games_count, seeds = [0], []
+    games_count, seeds = 0, []
     with os.scandir() as entries:
         for entry in entries:
             if "T_Dataset_{}.csv".format(botnames[options.indexed - 1]) == entry.name:
                 with open("T_Dataset_{}.csv".format(botnames[options.indexed - 1]), "r", newline="") as t_data:
-                    t_reader = csv.reader(t_data)
-                    seeds = [int(item[1]) for item in list(t_reader)]
-                    games_count = [int(item[0]) for item in list(t_reader)]
+                    hist_data = list(csv.reader(t_data))
+                    if not hist_data == []:
+                        seeds = [int(item[1]) for item in hist_data]
+                        games_count = [int(item[0]) for item in hist_data][-1]
+                    else:
+                        games_count, seeds = 0, []
 
     with open("T_Dataset_{}.csv".format(botnames[options.indexed - 1]), "a", newline="") as t_data:
         t_writer = csv.writer(t_data)
@@ -50,11 +53,10 @@ def run_tournament(options):
                     wins[winner] += score
 
                     if winner == options.indexed - 1 and score > 1:
-                        games_count.append(games_count[-1] + playedgames)
-                        t_writer.writerow([games_count[-1], seed])
+                        t_writer.writerow([games_count + playedgames, seed])
 
                 playedgames += 1
-                print('Played {} out of {:.0f} games ([bold yellow]{:.0f}%[/bold yellow]): [italic green]{}[/italic green] won, seed [red]{}[/red], [black]{}[/black] \r'
+                print('Played {} out of {:.0f} games ([yellow]{:.0f}%[/yellow]): [italic green]{}[/italic green] won, seed [red]{}[/red], [black]{}[/black] \r'
                 .format(playedgames, totalgames, playedgames/float(totalgames) * 100, botnames[winner], seed, wins))
 
     print('Results:')
