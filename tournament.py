@@ -1,18 +1,15 @@
 from argparse import ArgumentParser
 from api import State, util, engine
-import random, time, csv, os
+import random, csv
 
 def run_tournament(options):
 
     botnames = options.players.split(",")
-    print(botnames)
 
-    bots = []
-    for botname in botnames:
-        bots.append(util.load_player(botname))
+    bots = [util.load_player(botname) for botname in botnames]
 
     n = len(bots)
-    wins = [0] * len(bots)
+    wins = [0] * n
     matches = [(p1, p2) for p1 in range(n) for p2 in range(n) if p1 < p2]
 
     totalgames = (n*n - n)/2 * options.repeats
@@ -20,17 +17,13 @@ def run_tournament(options):
 
     print('Playing {} games:'.format(int(totalgames)))
 
-    #if not os.find("T_Dataset.csv"):
     with open("T_Dataset_{}.csv".format(botnames[options.indexed - 1]), "a", newline="") as t_data:
         t_writer = csv.writer(t_data)
 
         for a, b in matches:
-            for r in range(options.repeats):
+            for i in range(options.repeats):
 
-                if random.choice([True, False]):
-                    p = [a, b]
-                else:
-                    p = [b, a]
+                p = [a, b] if random.choice([True, False]) else [b, a]
 
                 # Generate a state with a random seed
                 seed = random.randint(1000000, 9999999)
@@ -42,16 +35,16 @@ def run_tournament(options):
                     winner = p[winner - 1]
                     wins[winner] += score
 
-                    if winner == options.indexed - 1:
+                    if winner == options.indexed - 1 and score > 1:
                         t_writer.writerow([seed])
 
                 playedgames += 1
-                print('Played {} out of {:.0f} games ({:.0f}%): {}, seed {} \r'.format(playedgames, totalgames, playedgames/float(totalgames) * 100, wins, seed))
+                print('Played {} out of {:.0f} games ({:.0f}%): {}, {} won, seed {} \r'.format(playedgames, totalgames, playedgames/float(totalgames) * 100, wins, winner, seed))
 
     print('Results:')
-    for i in range(len(bots)):
+    for i, bot in enumerate(bots):
         games_won = int(wins[i] / 100000) + int(wins[i] % 100000)
-        print('    bot {}: {} points, won {} games'.format(bots[i], wins[i], games_won))
+        print(' '*4 + 'bot {}: {} points, won {} games'.format(bot, wins[i], games_won))
 
 
 if __name__ == "__main__":
