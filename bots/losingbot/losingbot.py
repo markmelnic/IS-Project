@@ -1,4 +1,3 @@
-from api import State
 from api import Deck
 
 class Bot:
@@ -7,7 +6,7 @@ class Bot:
 
 	def get_move(self, state):
 		moves = state.moves()
-		moves = [move for move in moves if move[0] is not None]
+		moves = [move for move in moves if move[0] is not None and move[1] is None]
 
 		# get trump moves
 		moves_trump_suit = [move for move in moves if Deck.get_suit(move[0]) == state.get_trump_suit()]
