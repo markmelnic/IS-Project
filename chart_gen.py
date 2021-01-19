@@ -3,6 +3,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 
+matplotlib.rcParams.update({'font.size': 22})
 
 labels, data = [], []
 with os.scandir() as entries:
