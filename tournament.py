@@ -21,9 +21,8 @@ def run_tournament(options):
     matches = [(p1, p2) for p1 in range(n) for p2 in range(n) if p1 < p2]
 
     totalgames = (n*n - n)/2 * options.repeats
-    playedgames = 0
 
-    games_count, seeds = 0, []
+    playedgames, scoredgames, games_count, seeds = 0, 0, 0, []
     filename = "T_Dataset_{}-{}.csv".format(botnames[options.indexed - 1], botnames[options.indexed - 2])
     with os.scandir() as entries:
         for entry in entries:
@@ -36,12 +35,12 @@ def run_tournament(options):
                     else:
                         games_count, seeds = 0, []
 
-    print('Playing {} games:'.format(int(totalgames)))
+    print('Playing {} scored games:'.format(int(totalgames)))
     with open(filename, "a", newline="") as t_data:
         t_writer = csv.writer(t_data)
 
         for a, b in matches:
-            for i in range(options.repeats):
+            while not scoredgames == options.repeats:
 
                 p = [a, b] if random.choice([True, False]) else [b, a]
 
@@ -60,11 +59,13 @@ def run_tournament(options):
                     wins[winner] += score
 
                     if winner == options.indexed - 1 and score > 1:
-                        t_writer.writerow([games_count + playedgames, seed])
+                        t_writer.writerow([games_count + scoredgames, seed])
 
-                playedgames += 1
-                print('Played {} out of {:.0f} games ([yellow]{:.0f}%[/yellow]): [italic green]{}[/italic green] won, seed [red]{}[/red], [black]{}[/black] \r'
-                .format(playedgames, totalgames, playedgames/float(totalgames) * 100, botnames[winner], seed, wins))
+                    if score > 0:
+                        scoredgames += 1
+                    playedgames += 1
+                    print('Played {} games, {:.0f} scored out of {:.0f} ([yellow]{:.0f}%[/yellow]): [italic green]{}[/italic green] won, seed [red]{}[/red], [black]{}[/black] \r'
+                    .format(playedgames, scoredgames, totalgames, scoredgames/float(totalgames) * 100, botnames[winner], seed, wins))
 
     print('Results:')
     for i, bot in enumerate(bots):
