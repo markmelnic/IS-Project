@@ -4,6 +4,13 @@ import random, csv, os
 from rich import print
 
 def run_tournament(options):
+    '''
+    NOTES FOR THE CSV FILENAME
+    the first bot is the tracked one, the other is the opponent
+    for example in T_Dataset_ml-rdeep.csv
+    ml is the tracked player
+    and rdeep is the opponent
+    '''
 
     botnames = options.players.split(",")
 
@@ -16,13 +23,12 @@ def run_tournament(options):
     totalgames = (n*n - n)/2 * options.repeats
     playedgames = 0
 
-    print('Playing {} games:'.format(int(totalgames)))
-
     games_count, seeds = 0, []
+    filename = "T_Dataset_{}-{}.csv".format(botnames[options.indexed - 1], botnames[options.indexed - 2])
     with os.scandir() as entries:
         for entry in entries:
-            if "T_Dataset_{}.csv".format(botnames[options.indexed - 1]) == entry.name:
-                with open("T_Dataset_{}.csv".format(botnames[options.indexed - 1]), "r", newline="") as t_data:
+            if filename == entry.name:
+                with open(filename, "r", newline="") as t_data:
                     hist_data = list(csv.reader(t_data))
                     if not hist_data == []:
                         seeds = [int(item[1]) for item in hist_data]
@@ -30,7 +36,8 @@ def run_tournament(options):
                     else:
                         games_count, seeds = 0, []
 
-    with open("T_Dataset_{}.csv".format(botnames[options.indexed - 1]), "a", newline="") as t_data:
+    print('Playing {} games:'.format(int(totalgames)))
+    with open(filename, "a", newline="") as t_data:
         t_writer = csv.writer(t_data)
 
         for a, b in matches:
@@ -61,8 +68,9 @@ def run_tournament(options):
 
     print('Results:')
     for i, bot in enumerate(bots):
-        games_won = int(wins[i] / 100000) + int(wins[i] % 100000)
-        print(' '*4 + 'bot {}: {} points, won {} games'.format(bot, wins[i], games_won))
+        games_2 = int(wins[i] / 100000)
+        games_3 = int(wins[i] % 100000)
+        print(' '*4 + 'bot {}: {} points, won {} [purple]2[/purple] point games, {} [purple]3[/purple] point games, {} total'.format(bot, wins[i], games_2, games_3, games_2 + games_3))
 
 
 if __name__ == "__main__":
