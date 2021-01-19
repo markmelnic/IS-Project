@@ -21,12 +21,12 @@ x = np.arange(len(labels))  # the label locations
 width = 0.35  # the width of the bars
 
 fig, ax = plt.subplots()
-rects1 = ax.bar(x - width/2, ml_wins, width, label='ML Wins')
-rects2 = ax.bar(x + width/2, ml_lost, width, label='ML Lost')
+rects1 = ax.bar(x - width/2, ml_wins, width, label='ML Wins', color="#ffb600")
+rects2 = ax.bar(x + width/2, ml_lost, width, label='ML Lost', color="#cc1c02")
 
 # Add some text for labels, title and custom x-axis tick labels, etc.
 ax.set_ylabel('Number of games')
-ax.set_title('Losingbot Wins and Loses against various bots in 1000 games')
+ax.set_title('Losingbot wins and loses against various bots in 1000 games')
 ax.set_xticks(x)
 ax.set_xticklabels(labels)
 ax.legend()
