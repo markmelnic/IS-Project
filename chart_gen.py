@@ -13,6 +13,7 @@ with os.scandir() as entries:
                 labels.append(entry.name)
                 data.append(list(csv.reader(csv_file)))
 
+bot = labels[0].split("_")[-1].split(".")[0].split("-")[0]
 labels = [l.split("_")[-1].split(".")[0].split("-")[1] for l in labels]
 
 ml_wins = [len(d) for d in data]
@@ -22,12 +23,12 @@ x = np.arange(len(labels))  # the label locations
 width = 0.35  # the width of the bars
 
 fig, ax = plt.subplots()
-rects1 = ax.bar(x - width/2, ml_wins, width, label='ML Wins', color="#ffb600")
-rects2 = ax.bar(x + width/2, ml_lost, width, label='ML Lost', color="#cc1c02")
+rects1 = ax.bar(x - width/2, ml_wins, width, label='{} Wins'.format(bot), color="#ffb600")
+rects2 = ax.bar(x + width/2, ml_lost, width, label='{} Lost'.format(bot), color="#cc1c02")
 
 # Add some text for labels, title and custom x-axis tick labels, etc.
 ax.set_ylabel('Number of games')
-ax.set_title('Losingbot wins and loses against various bots in 1000 games')
+ax.set_title('{} wins and losses against various bots in 1000 games'.format(bot))
 ax.set_xticks(x)
 ax.set_xticklabels(labels)
 ax.legend()
