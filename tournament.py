@@ -89,7 +89,7 @@ def run_tournament(options):
                         wins[winner] += score
 
                         if winner == options.indexed - 1 and score > 1:
-                            t_writer.writerow([games_count + scoredgames, seed])
+                            t_writer.writerow([int(totalgames), seed])
 
                         if score > 0:
                             scoredgames += 1
