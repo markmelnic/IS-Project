@@ -31,7 +31,7 @@ ax.set_ylabel('Number of games')
 ax.set_title('{} wins and losses against various bots in 1000 games'.format(bot))
 ax.set_xticks(x)
 ax.set_xticklabels(labels)
-ax.legend()
+ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.05), fancybox=True, shadow=True, ncol=5)
 
 def autolabel(rects):
     for rect in rects:
